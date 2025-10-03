@@ -20,7 +20,7 @@ export async function apiClient<T>(
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined) {
+      if (value !== undefined && value !== null) {
         url.searchParams.append(key, String(value));
       }
     });
