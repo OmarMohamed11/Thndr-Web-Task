@@ -146,6 +146,7 @@ playwright/.cache/
 # Vitest
 coverage/
 
+# Project documentation (local tracking only)
 README.md
 PLAN.md
 
