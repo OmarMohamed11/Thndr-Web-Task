@@ -12,7 +12,7 @@ describe("apiClient", () => {
     const mockData = { status: "OK", results: [] };
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockData,
+      json: () => Promise.resolve(mockData),
     });
 
     const result = await apiClient("/v3/reference/tickers", { limit: 10 });
@@ -25,7 +25,7 @@ describe("apiClient", () => {
     const mockData = { status: "OK" };
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockData,
+      json: () => Promise.resolve(mockData),
     });
 
     await apiClient("/v3/reference/tickers", {
@@ -35,7 +35,7 @@ describe("apiClient", () => {
     });
 
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
-      .calls[0][0];
+      .calls[0][0] as string;
     expect(calledUrl).toContain("market=stocks");
     expect(calledUrl).toContain("limit=100");
     expect(calledUrl).toContain("active=true");
@@ -45,7 +45,7 @@ describe("apiClient", () => {
     const mockData = { status: "OK" };
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockData,
+      json: () => Promise.resolve(mockData),
     });
 
     await apiClient("/v3/reference/tickers", {
@@ -55,7 +55,7 @@ describe("apiClient", () => {
     });
 
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
-      .calls[0][0];
+      .calls[0][0] as string;
     expect(calledUrl).toContain("market=stocks");
     expect(calledUrl).not.toContain("search");
     expect(calledUrl).not.toContain("exchange");
@@ -92,7 +92,7 @@ describe("fetchFromUrl", () => {
     const mockData = { status: "OK", results: [] };
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       ok: true,
-      json: async () => mockData,
+      json: () => Promise.resolve(mockData),
     });
 
     const result = await fetchFromUrl(
@@ -101,7 +101,7 @@ describe("fetchFromUrl", () => {
 
     expect(result).toEqual(mockData);
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
-      .calls[0][0];
+      .calls[0][0] as string;
     expect(calledUrl).toContain("apiKey=");
   });
 

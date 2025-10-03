@@ -20,7 +20,7 @@ export async function apiClient<T>(
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
+      if (value !== undefined) {
         url.searchParams.append(key, String(value));
       }
     });
@@ -39,7 +39,7 @@ export async function apiClient<T>(
       );
     }
 
-    const data = await response.json();
+    const data: unknown = await response.json();
     return data as T;
   } catch (error) {
     if (error instanceof ApiError) {
@@ -65,7 +65,7 @@ export async function fetchFromUrl<T>(url: string): Promise<T> {
       );
     }
 
-    const data = await response.json();
+    const data: unknown = await response.json();
     return data as T;
   } catch (error) {
     if (error instanceof ApiError) {
