@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 const API_BASE_URL = "https://api.polygon.io";
 const API_KEY = import.meta.env.VITE_POLYGON_API_KEY;
 
