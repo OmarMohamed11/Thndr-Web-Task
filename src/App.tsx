@@ -1,6 +1,19 @@
+import { useState } from "react";
+import Splash from "./components/Splash";
+
 function App() {
+    const [showSplash, setShowSplash] = useState(true);
+
+    const handleSplashComplete = () => {
+        setShowSplash(false);
+    };
+
+    if (showSplash) {
+        return <Splash onComplete={handleSplashComplete} />;
+    }
+
     return (
-        <div className="min-h-screen bg-black text-white">
+        <div className="min-h-screen bg-dark-bg text-white">
             <h1 className="text-4xl font-bold text-center py-8">
                 Nasdaq Stocks
             </h1>
