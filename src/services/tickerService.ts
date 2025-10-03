@@ -4,7 +4,7 @@ import type { TickersResponse, TickersQueryParams } from "../types/ticker";
 export async function getTickers(
   params: TickersQueryParams = {}
 ): Promise<TickersResponse> {
-  const defaultParams: TickersQueryParams = {
+  const defaultParams = {
     market: "stocks",
     exchange: "XNAS",
     active: true,
