@@ -18,6 +18,9 @@ export default {
         extend: {
             colors: {
                 "light-blue": "#2796c7",
+                "dark-bg": "#131211",
+                "dark-surface": "#3a3a3a",
+                "dark-border": "#4a4a4a",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
@@ -32,7 +35,7 @@ export default {
                     foreground: "#ffffff",
                 },
                 muted: {
-                    DEFAULT: "#1f1f1f",
+                    DEFAULT: "#3a3a3a",
                     foreground: "#a1a1aa",
                 },
             },

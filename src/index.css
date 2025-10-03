@@ -4,10 +4,10 @@
 
 @layer base {
     :root {
-        --background: 0 0% 0%;
+        --background: 0 0% 7%;
         --foreground: 0 0% 100%;
-        --border: 0 0% 20%;
-        --input: 0 0% 15%;
+        --border: 0 0% 29%;
+        --input: 0 0% 23%;
         --ring: 196 72% 47%;
     }
 
