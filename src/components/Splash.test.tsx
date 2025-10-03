@@ -1,5 +1,6 @@
+import React from "react";
 import { render, screen, act } from "@testing-library/react";
-import { vi } from "vitest";
+import { vi, expect, afterEach, beforeEach, describe, it } from "vitest";
 import Splash from "./Splash";
 
 describe("Splash", () => {
