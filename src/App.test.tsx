@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, waitFor, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import App from "./App";
 
 describe("App", () => {
@@ -17,7 +17,7 @@ describe("App", () => {
         expect(screen.getByText("Omar Mohamed -")).toBeInTheDocument();
     });
 
-    it("transitions to main app after splash completes", async () => {
+    it("transitions to main app after splash completes", () => {
         render(<App />);
 
         expect(screen.getByAltText("Nasdaq Logo")).toBeInTheDocument();

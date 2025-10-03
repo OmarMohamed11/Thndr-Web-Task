@@ -1,4 +1,4 @@
-import { render, screen, waitFor, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { vi } from "vitest";
 import Splash from "./Splash";
 
@@ -29,7 +29,7 @@ describe("Splash", () => {
         expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
     });
 
-    it("calls onComplete after 2 seconds", async () => {
+    it("calls onComplete after 2 seconds", () => {
         const mockOnComplete = vi.fn();
         render(<Splash onComplete={mockOnComplete} />);
 
@@ -46,7 +46,7 @@ describe("Splash", () => {
         expect(mockOnComplete).toHaveBeenCalledTimes(1);
     }, 10000);
 
-    it("applies fade-out animation before calling onComplete", async () => {
+    it("applies fade-out animation before calling onComplete", () => {
         const mockOnComplete = vi.fn();
         render(<Splash onComplete={mockOnComplete} />);
 
