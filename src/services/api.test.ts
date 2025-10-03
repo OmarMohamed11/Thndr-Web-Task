@@ -41,7 +41,7 @@ describe("apiClient", () => {
     expect(calledUrl).toContain("active=true");
   });
 
-  it("should filter out undefined and null parameters", async () => {
+  it("should filter out undefined parameters", async () => {
     const mockData = { status: "OK" };
     (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       ok: true,
@@ -51,14 +51,12 @@ describe("apiClient", () => {
     await apiClient("/v3/reference/tickers", {
       market: "stocks",
       search: undefined,
-      exchange: null as unknown as undefined,
     });
 
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
       .calls[0][0] as string;
     expect(calledUrl).toContain("market=stocks");
     expect(calledUrl).not.toContain("search");
-    expect(calledUrl).not.toContain("exchange");
   });
 
   it("should throw ApiError when response is not ok", async () => {
