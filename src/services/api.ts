@@ -12,6 +12,15 @@ export class ApiError extends Error {
     }
 }
 
+export class RateLimitError extends ApiError {
+    constructor(
+        message: string = "Rate limit exceeded. Please wait before making another request."
+    ) {
+        super(message, 429, "Too Many Requests");
+        this.name = "RateLimitError";
+    }
+}
+
 export async function apiClient<T>(
     endpoint: string,
     params?: Record<string, string | number | boolean | undefined>
@@ -32,6 +41,11 @@ export async function apiClient<T>(
         const response = await fetch(url.toString());
 
         if (!response.ok) {
+            if (response.status === 429) {
+                throw new RateLimitError(
+                    `Rate limit exceeded. Please wait before making another request. Status: ${response.statusText}`
+                );
+            }
             throw new ApiError(
                 `API request failed: ${response.statusText}`,
                 response.status,
@@ -58,6 +72,11 @@ export async function fetchFromUrl<T>(url: string): Promise<T> {
         const response = await fetch(fullUrl);
 
         if (!response.ok) {
+            if (response.status === 429) {
+                throw new RateLimitError(
+                    `Rate limit exceeded. Please wait before making another request. Status: ${response.statusText}`
+                );
+            }
             throw new ApiError(
                 `API request failed: ${response.statusText}`,
                 response.status,
