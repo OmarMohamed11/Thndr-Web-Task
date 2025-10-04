@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
-const API_BASE_URL = "https://api.polygon.io";
-const API_KEY = import.meta.env.VITE_POLYGON_API_KEY;
+// Use Netlify proxy function for secure API calls
+const API_BASE_URL = "/.netlify/functions/polygon-proxy";
 
 // Rate limit cooldown management
 let rateLimitCooldownUntil: number | null = null;
@@ -103,7 +103,10 @@ export async function apiClient<T>(
   endpoint: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
-  const url = new URL(`${API_BASE_URL}${endpoint}`);
+  const url = new URL(API_BASE_URL, window.location.origin);
+
+  // Add the endpoint as a query parameter for the proxy
+  url.searchParams.append("endpoint", endpoint);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -113,16 +116,24 @@ export async function apiClient<T>(
     });
   }
 
-  url.searchParams.append("apiKey", API_KEY);
-
   return fetchWithHandling<T>(url.toString());
 }
 
 export async function fetchFromUrl<T>(url: string): Promise<T> {
-  // If the url already has query params, append with &, else with ?
-  const separator = url.includes("?") ? "&" : "?";
-  const fullUrl = `${url}${separator}apiKey=${API_KEY}`;
-  return fetchWithHandling<T>(fullUrl);
+  // Parse the URL to extract endpoint and parameters
+  const urlObj = new URL(url);
+  const endpoint = urlObj.pathname;
+
+  // Create proxy URL
+  const proxyUrl = new URL(API_BASE_URL, window.location.origin);
+  proxyUrl.searchParams.append("endpoint", endpoint);
+
+  // Copy all query parameters from the original URL
+  urlObj.searchParams.forEach((value, key) => {
+    proxyUrl.searchParams.append(key, value);
+  });
+
+  return fetchWithHandling<T>(proxyUrl.toString());
 }
 
 // Utility functions for rate limit status

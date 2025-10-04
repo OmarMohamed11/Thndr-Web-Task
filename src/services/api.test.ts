@@ -36,6 +36,8 @@ describe("apiClient", () => {
 
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
       .calls[0][0] as string;
+    expect(calledUrl).toContain("/.netlify/functions/polygon-proxy");
+    expect(calledUrl).toContain("endpoint=%2Fv3%2Freference%2Ftickers");
     expect(calledUrl).toContain("market=stocks");
     expect(calledUrl).toContain("limit=100");
     expect(calledUrl).toContain("active=true");
@@ -55,6 +57,8 @@ describe("apiClient", () => {
 
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
       .calls[0][0] as string;
+    expect(calledUrl).toContain("/.netlify/functions/polygon-proxy");
+    expect(calledUrl).toContain("endpoint=%2Fv3%2Freference%2Ftickers");
     expect(calledUrl).toContain("market=stocks");
     expect(calledUrl).not.toContain("search");
   });
@@ -100,7 +104,8 @@ describe("fetchFromUrl", () => {
     expect(result).toEqual(mockData);
     const calledUrl = (global.fetch as ReturnType<typeof vi.fn>).mock
       .calls[0][0] as string;
-    expect(calledUrl).toContain("apiKey=");
+    expect(calledUrl).toContain("/.netlify/functions/polygon-proxy");
+    expect(calledUrl).toContain("endpoint=%2Fv3%2Freference%2Ftickers");
   });
 
   it("should throw ApiError on failure", async () => {
