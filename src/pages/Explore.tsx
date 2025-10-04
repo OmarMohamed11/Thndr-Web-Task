@@ -53,7 +53,7 @@ export function Explore() {
                             hasShownToastRef.current = false;
                             void fetchNextPage();
                         },
-                        duration: 0, // Don't auto-dismiss during cooldown
+                        duration: 0,
                     });
 
                     rateLimitToastIdRef.current = toastId;
