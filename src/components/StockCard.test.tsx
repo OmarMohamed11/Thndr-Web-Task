@@ -31,9 +31,8 @@ describe("StockCard", () => {
 
         const tickerElement = screen.getByText("AAPL");
         expect(tickerElement).toHaveClass(
-            "text-lg",
-            "font-bold",
-            "text-light-blue"
+            "text-light-blue",
+            "border-light-blue/30"
         );
     });
 
@@ -41,30 +40,38 @@ describe("StockCard", () => {
         render(<StockCard ticker={mockTicker} />);
 
         const nameElement = screen.getByText("Apple Inc.");
-        expect(nameElement).toHaveClass(
-            "text-sm",
-            "text-muted-foreground",
-            "line-clamp-2"
-        );
+        expect(nameElement).toHaveClass("text-lg", "font-bold", "text-white");
     });
 
     it("renders with hover effects", () => {
         render(<StockCard ticker={mockTicker} />);
 
-        const card = screen.getByText("AAPL").closest(".transition-transform");
-        expect(card).toHaveClass("hover:scale-105", "cursor-pointer");
+        const card = screen.getByText("AAPL").closest(".group");
+        expect(card).toHaveClass("hover:scale-[1.01]", "cursor-pointer");
     });
 
-    it("handles long company names with line clamping", () => {
+    it("renders exchange information", () => {
+        render(<StockCard ticker={mockTicker} />);
+
+        expect(screen.getByText("NASDAQ")).toBeInTheDocument();
+    });
+
+    it("trims long company names", () => {
         const longNameTicker: Ticker = {
             ...mockTicker,
-            name: "This is a very long company name that should be truncated with line clamping to prevent overflow",
+            name: "This is a very long company name that should be truncated",
         };
 
         render(<StockCard ticker={longNameTicker} />);
 
-        const nameElement = screen.getByText(longNameTicker.name);
-        expect(nameElement).toHaveClass("line-clamp-2");
+        // Should show trimmed name with ellipsis
+        expect(
+            screen.getByText("This is a very long company na...")
+        ).toBeInTheDocument();
+
+        // Should have title attribute with full name
+        const nameElement = screen.getByTitle(longNameTicker.name);
+        expect(nameElement).toBeInTheDocument();
     });
 
     it("renders different ticker symbols correctly", () => {
