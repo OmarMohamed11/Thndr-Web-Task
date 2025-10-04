@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTickers } from "../hooks/useTickers";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { LoadingSpinner } from "../components/ui/loading-spinner";
@@ -8,8 +8,13 @@ import { useToast } from "../hooks/use-toast";
 import { Button } from "../components/ui/button";
 import { RateLimitError, getRateLimitStatus } from "../services/api";
 
-export function Explore() {
+interface ExploreProps {
+    readonly searchTerm: string;
+}
+
+export function Explore({ searchTerm }: ExploreProps) {
     const { toast } = useToast();
+
     const {
         data,
         error,
@@ -18,11 +23,10 @@ export function Explore() {
         isFetchingNextPage,
         isLoading,
         isError,
-    } = useTickers();
+    } = useTickers(searchTerm ? { search: searchTerm } : {});
 
     const previousErrorRef = useRef<Error | null>(null);
     const hasShownToastRef = useRef(false);
-    const [cooldownSeconds, setCooldownSeconds] = useState<number | null>(null);
     const rateLimitToastIdRef = useRef<string | null>(null);
 
     const { lastElementRef } = useInfiniteScroll({
@@ -33,10 +37,8 @@ export function Explore() {
         },
     });
 
-    // Handle subsequent page fetch errors with toast
     useEffect(() => {
         if (error && data && data.pages.length > 0) {
-            // Check if this is a new error (not the same as previous)
             const isNewError = error !== previousErrorRef.current;
 
             if (isNewError && !hasShownToastRef.current) {
@@ -91,23 +93,18 @@ export function Explore() {
 
             previousErrorRef.current = error;
         } else if (!error) {
-            // Reset the toast flag when there's no error
             hasShownToastRef.current = false;
             previousErrorRef.current = null;
         }
-    }, [error, data, toast, fetchNextPage, cooldownSeconds]);
+    }, [error, data, toast, fetchNextPage]);
 
     useEffect(() => {
         const rateLimitStatus = getRateLimitStatus();
 
         if (rateLimitStatus.isRateLimited) {
-            setCooldownSeconds(rateLimitStatus.remainingCooldownSeconds);
-
             const interval = setInterval(() => {
                 const currentStatus = getRateLimitStatus();
                 if (currentStatus.isRateLimited) {
-                    setCooldownSeconds(currentStatus.remainingCooldownSeconds);
-
                     if (rateLimitToastIdRef.current) {
                         toast({
                             title: "Rate Limit Exceeded",
@@ -117,7 +114,6 @@ export function Explore() {
                         });
                     }
                 } else {
-                    setCooldownSeconds(null);
                     rateLimitToastIdRef.current = null;
                     clearInterval(interval);
                 }
@@ -127,45 +123,87 @@ export function Explore() {
                 clearInterval(interval);
             };
         } else {
-            setCooldownSeconds(null);
             rateLimitToastIdRef.current = null;
         }
-    }, [error, toast, cooldownSeconds]);
+    }, [error, toast]);
+
+    const isSearching = searchTerm && searchTerm.length > 0;
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-[400px]">
-                <LoadingSpinner size="lg" />
+            <div className="container mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-center mb-2">
+                        Nasdaq Stocks
+                    </h1>
+                    <p className="text-center text-muted-foreground">
+                        Explore stocks listed on the Nasdaq exchange
+                    </p>
+                </div>
+
+                <div className="flex items-center justify-center min-h-[400px]">
+                    <LoadingSpinner size="lg" />
+                </div>
             </div>
         );
     }
 
-    // Handle initial load errors
     if (isError && !data) {
         return (
-            <ErrorState
-                message={
-                    error instanceof Error
-                        ? error.message
-                        : "Failed to load stocks"
-                }
-                onRetry={() => {
-                    window.location.reload();
-                }}
-            />
+            <div className="container mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-center mb-2">
+                        Nasdaq Stocks
+                    </h1>
+                    <p className="text-center text-muted-foreground">
+                        Explore stocks listed on the Nasdaq exchange
+                    </p>
+                </div>
+
+                <ErrorState
+                    message={
+                        error instanceof Error
+                            ? error.message
+                            : "Failed to load stocks"
+                    }
+                    onRetry={() => {
+                        window.location.reload();
+                    }}
+                />
+            </div>
         );
     }
 
-    const allTickers = data?.pages.flatMap((page) => page.results || []) || [];
+    const allTickers = data
+        ? data.pages.flatMap((page) => page.results || [])
+        : [];
 
-    if (allTickers.length === 0) {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (allTickers.length === 0 && !isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-                <div className="text-center">
-                    <h3 className="text-lg font-semibold">No stocks found</h3>
-                    <p className="text-sm text-muted-foreground">
-                        There are no stocks available at the moment.
+            <div className="container mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-center mb-2">
+                        Nasdaq Stocks
+                    </h1>
+                    <p className="text-center text-muted-foreground">
+                        Explore stocks listed on the Nasdaq exchange
                     </p>
+                </div>
+
+                <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+                    <div className="text-center">
+                        <h3 className="text-lg font-semibold">
+                            {isSearching
+                                ? "No stocks found"
+                                : "No stocks available"}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                            {isSearching
+                                ? `No stocks found matching "${searchTerm}"`
+                                : "There are no stocks available at the moment."}
+                        </p>
+                    </div>
                 </div>
             </div>
         );
@@ -185,10 +223,13 @@ export function Explore() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {allTickers.map((ticker, index) => {
                     const isLastElement = index === allTickers.length - 1;
+                    const shouldUseInfiniteScroll = isLastElement;
                     return (
                         <div
                             key={ticker.ticker}
-                            ref={isLastElement ? lastElementRef : null}
+                            ref={
+                                shouldUseInfiniteScroll ? lastElementRef : null
+                            }
                         >
                             <StockCard ticker={ticker} />
                         </div>
@@ -200,7 +241,9 @@ export function Explore() {
                 <div className="flex justify-center mt-8">
                     <div className="flex items-center gap-2 text-muted-foreground">
                         <LoadingSpinner size="sm" />
-                        Loading more stocks...
+                        {isSearching
+                            ? "Loading more search results..."
+                            : "Loading more stocks..."}
                     </div>
                 </div>
             )}

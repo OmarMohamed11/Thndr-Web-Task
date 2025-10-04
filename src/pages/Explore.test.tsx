@@ -127,7 +127,7 @@ describe("Explore", () => {
 
         renderWithQueryClient(<Explore />);
 
-        expect(screen.getByText("No stocks found")).toBeInTheDocument();
+        expect(screen.getByText("No stocks available")).toBeInTheDocument();
         expect(
             screen.getByText("There are no stocks available at the moment.")
         ).toBeInTheDocument();
