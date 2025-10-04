@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ToastProvider } from "../contexts/ToastContext";
 import { Explore } from "./Explore";
 import type { Ticker } from "../types/ticker";
 
@@ -33,7 +32,7 @@ const renderWithQueryClient = (component: React.ReactElement) => {
     const queryClient = createTestQueryClient();
     return render(
         <QueryClientProvider client={queryClient}>
-            <ToastProvider>{component}</ToastProvider>
+            {component}
         </QueryClientProvider>
     );
 };

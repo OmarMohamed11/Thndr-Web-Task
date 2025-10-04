@@ -4,11 +4,11 @@ import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { LoadingSpinner } from "../components/ui/loading-spinner";
 import { ErrorState } from "../components/ui/error-state";
 import { StockCard } from "../components/StockCard";
-import { useToast } from "../contexts/ToastContext";
+import { useToast } from "../hooks/use-toast";
 import { RateLimitError, getRateLimitStatus } from "../services/api";
 
 export function Explore() {
-    const { showToast, updateToast } = useToast();
+    const { toast } = useToast();
     const {
         data,
         error,
@@ -46,29 +46,43 @@ export function Explore() {
                         ? `Rate limit exceeded. Please wait ${cooldownSeconds.toString()} seconds before making another request.`
                         : error.message;
 
-                    const toastId = showToast({
-                        message,
-                        type: "warning",
-                        onRetry: () => {
-                            hasShownToastRef.current = false;
-                            void fetchNextPage();
-                        },
-                        duration: 0,
+                    const toastResult = toast({
+                        title: "Rate Limit Exceeded",
+                        description: message,
+                        variant: "warning",
+                        action: (
+                            <button
+                                onClick={() => {
+                                    hasShownToastRef.current = false;
+                                    void fetchNextPage();
+                                }}
+                                className="text-xs underline hover:no-underline"
+                            >
+                                Retry
+                            </button>
+                        ),
                     });
 
-                    rateLimitToastIdRef.current = toastId;
+                    rateLimitToastIdRef.current = toastResult.id;
                 } else {
-                    showToast({
-                        message:
+                    toast({
+                        title: "Error",
+                        description:
                             error instanceof Error
                                 ? error.message
                                 : "Failed to load more stocks",
-                        type: "error",
-                        onRetry: () => {
-                            hasShownToastRef.current = false;
-                            void fetchNextPage();
-                        },
-                        duration: 8000,
+                        variant: "destructive",
+                        action: (
+                            <button
+                                onClick={() => {
+                                    hasShownToastRef.current = false;
+                                    void fetchNextPage();
+                                }}
+                                className="text-xs underline hover:no-underline"
+                            >
+                                Retry
+                            </button>
+                        ),
                     });
                 }
 
@@ -81,7 +95,7 @@ export function Explore() {
             hasShownToastRef.current = false;
             previousErrorRef.current = null;
         }
-    }, [error, data, showToast, fetchNextPage, cooldownSeconds]);
+    }, [error, data, toast, fetchNextPage, cooldownSeconds]);
 
     // Countdown timer for rate limit cooldown
     useEffect(() => {
@@ -97,8 +111,12 @@ export function Explore() {
 
                     // Update toast message with new countdown
                     if (rateLimitToastIdRef.current) {
-                        updateToast(rateLimitToastIdRef.current, {
-                            message: `Rate limit exceeded. Please wait ${currentStatus.remainingCooldownSeconds.toString()} seconds before making another request.`,
+                        // For shadcn/ui toast, we need to dismiss the old toast and show a new one
+                        // since it doesn't support updating by ID
+                        toast({
+                            title: "Rate Limit Exceeded",
+                            description: `Rate limit exceeded. Please wait ${currentStatus.remainingCooldownSeconds.toString()} seconds before making another request.`,
+                            variant: "warning",
                         });
                     }
                 } else {
@@ -115,7 +133,7 @@ export function Explore() {
             setCooldownSeconds(null);
             rateLimitToastIdRef.current = null;
         }
-    }, [error, updateToast, cooldownSeconds]);
+    }, [error, toast, cooldownSeconds]);
 
     if (isLoading) {
         return (
