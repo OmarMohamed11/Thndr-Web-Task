@@ -32,7 +32,9 @@ test.describe("App", () => {
         // Check that main app content is visible
         const heading = page.getByRole("heading", { name: /Nasdaq Stocks/i });
         await expect(heading).toBeVisible();
-        await expect(page.getByText("Coming soon...")).toBeVisible();
+        await expect(
+            page.getByText("Explore stocks listed on the Nasdaq exchange")
+        ).toBeVisible();
     });
 
     test("should have working GitHub link", async ({ page }) => {
