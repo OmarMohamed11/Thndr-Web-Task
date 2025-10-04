@@ -75,7 +75,10 @@ describe("Splash", () => {
         expect(splashContainer).toHaveClass(
             "fixed",
             "inset-0",
-            "bg-dark-bg",
+            "bg-gradient-to-br",
+            "from-slate-900",
+            "via-slate-800",
+            "to-slate-900",
             "flex",
             "flex-col",
             "items-center",
@@ -83,16 +86,23 @@ describe("Splash", () => {
             "z-50",
             "transition-opacity",
             "duration-500",
+            "backdrop-blur-sm",
             "opacity-100"
         );
 
         const logo = screen.getByAltText("Nasdaq Logo");
-        expect(logo).toHaveClass("w-48", "h-48", "md:w-56", "md:h-56");
+        expect(logo).toHaveClass(
+            "w-48",
+            "h-48",
+            "md:w-56",
+            "md:h-56",
+            "drop-shadow-2xl"
+        );
 
         const title = screen.getByText("Nasdaq Stocks");
         expect(title).toHaveClass(
-            "text-2xl",
-            "md:text-3xl",
+            "text-3xl",
+            "md:text-4xl",
             "font-bold",
             "text-white",
             "mb-2"
@@ -115,9 +125,11 @@ describe("Splash", () => {
 
         const githubLink = screen.getByRole("link", { name: /@OmarMohamed11/ });
         expect(githubLink).toHaveClass(
-            "underline",
+            "text-light-blue",
             "hover:text-white",
-            "transition-colors"
+            "transition-colors",
+            "duration-300",
+            "underline"
         );
     });
 });
