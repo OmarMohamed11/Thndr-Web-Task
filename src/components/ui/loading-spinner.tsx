@@ -21,6 +21,7 @@ export function LoadingSpinner({
         <div
             role="status"
             aria-label="Loading"
+            data-testid="loading-spinner"
             className={cn("flex items-center justify-center", className)}
             {...props}
         >

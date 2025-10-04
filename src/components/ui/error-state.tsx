@@ -16,6 +16,7 @@ export function ErrorState({
 }: ErrorStateProps) {
     return (
         <div
+            data-testid="error-state"
             className={cn(
                 "flex flex-col items-center justify-center gap-6 p-8 text-center min-h-[400px]",
                 className
