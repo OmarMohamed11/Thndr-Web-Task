@@ -64,7 +64,7 @@ async function fetchWithHandling<T>(url: string): Promise<T> {
         const remainingMs = getRemainingCooldownMs();
         const remainingSeconds = Math.ceil(remainingMs / 1000);
         throw new RateLimitError(
-            `Rate limit cooldown active. Please wait ${remainingSeconds} seconds before making another request.`,
+            `Rate limit cooldown active. Please wait ${remainingSeconds.toString()} seconds before making another request.`,
             remainingMs
         );
     }

@@ -2,8 +2,8 @@ import { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 interface ErrorStateProps extends HTMLAttributes<HTMLDivElement> {
-    message?: string;
-    onRetry?: () => void;
+    readonly message?: string;
+    readonly onRetry?: () => void;
 }
 
 export function ErrorState({

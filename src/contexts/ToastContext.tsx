@@ -34,28 +34,31 @@ export function useToast() {
 export function ToastProvider({ children }: { children: React.ReactNode }) {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
-    const showToast = useCallback((toast: Omit<Toast, "id">) => {
-        const id = Math.random().toString(36).substr(2, 9);
-        const newToast: Toast = {
-            ...toast,
-            id,
-            duration: toast.duration ?? 5000,
-        };
-
-        setToasts((prev) => [...prev, newToast]);
-
-        if (newToast.duration > 0) {
-            setTimeout(() => {
-                hideToast(id);
-            }, newToast.duration);
-        }
-
-        return id;
-    }, []);
-
     const hideToast = useCallback((id: string) => {
         setToasts((prev) => prev.filter((toast) => toast.id !== id));
     }, []);
+
+    const showToast = useCallback(
+        (toast: Omit<Toast, "id">) => {
+            const id = Math.random().toString(36).substring(2, 11);
+            const newToast: Toast = {
+                ...toast,
+                id,
+                duration: toast.duration ?? 5000,
+            };
+
+            setToasts((prev) => [...prev, newToast]);
+
+            if (newToast.duration > 0) {
+                setTimeout(() => {
+                    hideToast(id);
+                }, newToast.duration);
+            }
+
+            return id;
+        },
+        [hideToast]
+    );
 
     const updateToast = useCallback(
         (id: string, updates: Partial<Omit<Toast, "id">>) => {
@@ -199,7 +202,9 @@ function ToastItem({
                 )}
             </div>
             <button
-                onClick={() => onHide(toast.id)}
+                onClick={() => {
+                    onHide(toast.id);
+                }}
                 className="text-white/70 hover:text-white"
             >
                 <svg

@@ -43,7 +43,7 @@ export function Explore() {
 
                 if (isRateLimit) {
                     const message = cooldownSeconds
-                        ? `Rate limit exceeded. Please wait ${cooldownSeconds} seconds before making another request.`
+                        ? `Rate limit exceeded. Please wait ${cooldownSeconds.toString()} seconds before making another request.`
                         : error.message;
 
                     const toastId = showToast({
@@ -81,7 +81,7 @@ export function Explore() {
             hasShownToastRef.current = false;
             previousErrorRef.current = null;
         }
-    }, [error, data, showToast, fetchNextPage]);
+    }, [error, data, showToast, fetchNextPage, cooldownSeconds]);
 
     // Countdown timer for rate limit cooldown
     useEffect(() => {
@@ -98,7 +98,7 @@ export function Explore() {
                     // Update toast message with new countdown
                     if (rateLimitToastIdRef.current) {
                         updateToast(rateLimitToastIdRef.current, {
-                            message: `Rate limit exceeded. Please wait ${currentStatus.remainingCooldownSeconds} seconds before making another request.`,
+                            message: `Rate limit exceeded. Please wait ${currentStatus.remainingCooldownSeconds.toString()} seconds before making another request.`,
                         });
                     }
                 } else {
@@ -108,12 +108,14 @@ export function Explore() {
                 }
             }, 1000);
 
-            return () => clearInterval(interval);
+            return () => {
+                clearInterval(interval);
+            };
         } else {
             setCooldownSeconds(null);
             rateLimitToastIdRef.current = null;
         }
-    }, [error, updateToast]);
+    }, [error, updateToast, cooldownSeconds]);
 
     if (isLoading) {
         return (
