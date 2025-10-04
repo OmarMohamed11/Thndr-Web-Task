@@ -16,7 +16,7 @@ export function Header({ onSearch }: HeaderProps) {
                 </div>
 
                 <div className="absolute left-1/2 transform -translate-x-1/2">
-                    <div className="max-w-md w-full">
+                    <div className="max-w-2xl w-full">
                         <SearchBar onSearch={onSearch} />
                     </div>
                 </div>
