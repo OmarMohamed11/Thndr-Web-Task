@@ -8,32 +8,32 @@ import "./index.css";
 import App from "./App";
 
 const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: 5 * 60 * 1000,
-            refetchOnWindowFocus: false,
-            retry: false,
-            gcTime: 1000 * 60 * 60 * 24,
-        },
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      retry: false,
+      gcTime: 1000 * 60 * 60 * 24,
     },
+  },
 });
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
 const asyncStoragePersister = createAsyncStoragePersister({
-    storage: window.localStorage,
-    key: "thndr-stocks-app",
+  storage: window.localStorage,
+  key: "thndr-stocks-app",
 });
 
 createRoot(rootElement).render(
-    <StrictMode>
-        <PersistQueryClientProvider
-            client={queryClient}
-            persistOptions={{ persister: asyncStoragePersister }}
-        >
-            <App />
-            <ReactQueryDevtools initialIsOpen={false} />
-        </PersistQueryClientProvider>
-    </StrictMode>
+  <StrictMode>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister: asyncStoragePersister }}
+    >
+      <App />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </PersistQueryClientProvider>
+  </StrictMode>
 );

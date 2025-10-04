@@ -4,44 +4,44 @@ import { getTickers, searchTickers } from "./tickerService";
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe("API Integration Tests", () => {
-    beforeAll(async () => {
-        await delay(5000);
-    });
+  beforeAll(async () => {
+    await delay(5000);
+  });
 
-    it.skip("should fetch Nasdaq stocks from real API", async () => {
-        const response = await getTickers({ limit: 10 });
+  it.skip("should fetch Nasdaq stocks from real API", async () => {
+    const response = await getTickers({ limit: 10 });
 
-        expect(response).toBeDefined();
-        expect(response.status).toBe("OK");
-        expect(response.results).toBeDefined();
-        expect(Array.isArray(response.results)).toBe(true);
+    expect(response).toBeDefined();
+    expect(response.status).toBe("OK");
+    expect(response.results).toBeDefined();
+    expect(Array.isArray(response.results)).toBe(true);
 
-        if (response.results && response.results.length > 0) {
-            const firstStock = response.results[0];
-            expect(firstStock).toHaveProperty("ticker");
-            expect(firstStock).toHaveProperty("name");
-            expect(firstStock.market).toBe("stocks");
-            expect(firstStock.active).toBe(true);
-        }
-    }, 15000);
+    if (response.results && response.results.length > 0) {
+      const firstStock = response.results[0];
+      expect(firstStock).toHaveProperty("ticker");
+      expect(firstStock).toHaveProperty("name");
+      expect(firstStock.market).toBe("stocks");
+      expect(firstStock.active).toBe(true);
+    }
+  }, 15000);
 
-    it.skip("should search for specific ticker", async () => {
-        await delay(10000);
+  it.skip("should search for specific ticker", async () => {
+    await delay(10000);
 
-        const response = await searchTickers("Apple", { limit: 5 });
+    const response = await searchTickers("Apple", { limit: 5 });
 
-        expect(response).toBeDefined();
-        expect(response.status).toBe("OK");
-        expect(response.results).toBeDefined();
-    }, 15000);
+    expect(response).toBeDefined();
+    expect(response.status).toBe("OK");
+    expect(response.results).toBeDefined();
+  }, 15000);
 
-    it.skip("should return next_url for pagination", async () => {
-        await delay(10000);
+  it.skip("should return next_url for pagination", async () => {
+    await delay(10000);
 
-        const response = await getTickers({ limit: 100 });
+    const response = await getTickers({ limit: 100 });
 
-        expect(response).toBeDefined();
-        expect(response.next_url).toBeDefined();
-        expect(typeof response.next_url).toBe("string");
-    }, 15000);
+    expect(response).toBeDefined();
+    expect(response.next_url).toBeDefined();
+    expect(typeof response.next_url).toBe("string");
+  }, 15000);
 });

@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        --background: 0 0% 7%;
-        --foreground: 0 0% 100%;
-        --border: 0 0% 29%;
-        --input: 0 0% 23%;
-        --ring: 196 72% 47%;
-    }
+  :root {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 100%;
+    --border: 0 0% 29%;
+    --input: 0 0% 23%;
+    --ring: 196 72% 47%;
+  }
 
-    * {
-        @apply border-border;
-    }
+  * {
+    @apply border-border;
+  }
 
-    body {
-        @apply bg-background text-foreground;
-    }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
