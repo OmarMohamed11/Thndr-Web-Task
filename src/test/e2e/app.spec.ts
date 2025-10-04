@@ -29,12 +29,15 @@ test.describe("App", () => {
             timeout: 5000,
         });
 
+        // Wait a bit more for the app to fully load
+        await page.waitForTimeout(1000);
+
         // Check that main app content is visible
         const heading = page.getByRole("heading", { name: /Nasdaq Stocks/i });
-        await expect(heading).toBeVisible();
+        await expect(heading).toBeVisible({ timeout: 10000 });
         await expect(
             page.getByText("Explore stocks listed on the Nasdaq exchange")
-        ).toBeVisible();
+        ).toBeVisible({ timeout: 10000 });
     });
 
     test("should have working GitHub link", async ({ page }) => {
