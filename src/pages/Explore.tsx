@@ -43,13 +43,10 @@ export function Explore() {
                 const isRateLimit = error instanceof RateLimitError;
 
                 if (isRateLimit) {
-                    const message = cooldownSeconds
-                        ? `Rate limit exceeded. Please wait ${cooldownSeconds.toString()} seconds before making another request.`
-                        : error.message;
-
                     const toastResult = toast({
                         title: "Rate Limit Exceeded",
-                        description: message,
+                        description:
+                            "Please wait before making another request.",
                         variant: "warning",
                         action: (
                             <Button
@@ -114,7 +111,8 @@ export function Explore() {
                     if (rateLimitToastIdRef.current) {
                         toast({
                             title: "Rate Limit Exceeded",
-                            description: `Rate limit exceeded. Please wait ${currentStatus.remainingCooldownSeconds.toString()} seconds before making another request.`,
+                            description:
+                                "Please wait before making another request.",
                             variant: "warning",
                         });
                     }
