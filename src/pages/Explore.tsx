@@ -5,6 +5,7 @@ import { LoadingSpinner } from "../components/ui/loading-spinner";
 import { ErrorState } from "../components/ui/error-state";
 import { StockCard } from "../components/StockCard";
 import { useToast } from "../hooks/use-toast";
+import { Button } from "../components/ui/button";
 import { RateLimitError, getRateLimitStatus } from "../services/api";
 
 export function Explore() {
@@ -51,15 +52,16 @@ export function Explore() {
                         description: message,
                         variant: "warning",
                         action: (
-                            <button
+                            <Button
+                                variant="outline"
+                                size="sm"
                                 onClick={() => {
                                     hasShownToastRef.current = false;
                                     void fetchNextPage();
                                 }}
-                                className="text-xs underline hover:no-underline"
                             >
                                 Retry
-                            </button>
+                            </Button>
                         ),
                     });
 
@@ -73,15 +75,16 @@ export function Explore() {
                                 : "Failed to load more stocks",
                         variant: "destructive",
                         action: (
-                            <button
+                            <Button
+                                variant="outline"
+                                size="sm"
                                 onClick={() => {
                                     hasShownToastRef.current = false;
                                     void fetchNextPage();
                                 }}
-                                className="text-xs underline hover:no-underline"
                             >
                                 Retry
-                            </button>
+                            </Button>
                         ),
                     });
                 }
@@ -97,7 +100,6 @@ export function Explore() {
         }
     }, [error, data, toast, fetchNextPage, cooldownSeconds]);
 
-    // Countdown timer for rate limit cooldown
     useEffect(() => {
         const rateLimitStatus = getRateLimitStatus();
 
@@ -109,10 +111,7 @@ export function Explore() {
                 if (currentStatus.isRateLimited) {
                     setCooldownSeconds(currentStatus.remainingCooldownSeconds);
 
-                    // Update toast message with new countdown
                     if (rateLimitToastIdRef.current) {
-                        // For shadcn/ui toast, we need to dismiss the old toast and show a new one
-                        // since it doesn't support updating by ID
                         toast({
                             title: "Rate Limit Exceeded",
                             description: `Rate limit exceeded. Please wait ${currentStatus.remainingCooldownSeconds.toString()} seconds before making another request.`,
