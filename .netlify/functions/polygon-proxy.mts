@@ -106,4 +106,4 @@ const handler: Handler = async (
   }
 };
 
-export { handler };
+export default handler;
