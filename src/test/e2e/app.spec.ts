@@ -4,7 +4,7 @@ test.describe("App", () => {
   test("should load the app", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page).toHaveTitle(/Nasdaq Stocks/);
+    await expect(page).toHaveTitle(/Stock Explorer/);
   });
 
   test("should show splash screen initially", async ({ page }) => {

@@ -3,8 +3,6 @@ import { getTickers, getNextPage } from "../services/tickerService";
 import type { TickersQueryParams } from "../types/ticker";
 
 const defaultParams: TickersQueryParams = {
-  market: "stocks",
-  exchange: "XNAS",
   active: true,
   limit: 100,
   sort: "ticker",
