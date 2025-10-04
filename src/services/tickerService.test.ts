@@ -10,7 +10,7 @@ describe("tickerService", () => {
     });
 
     describe("getTickers", () => {
-        it("should fetch tickers with default params", async () => {
+        it("should fetch tickers with provided params", async () => {
             const mockResponse = {
                 results: [
                     {
@@ -24,60 +24,49 @@ describe("tickerService", () => {
                 status: "OK",
             };
 
+            const params = {
+                market: "stocks",
+                exchange: "XNAS",
+                active: true,
+                limit: 100,
+                sort: "ticker",
+                order: "asc" as const,
+            };
+
             vi.spyOn(api, "apiClient").mockResolvedValueOnce(mockResponse);
 
-            const result = await getTickers();
+            const result = await getTickers(params);
 
             expect(result).toEqual(mockResponse);
             expect(api.apiClient).toHaveBeenCalledWith(
                 "/v3/reference/tickers",
-                {
-                    market: "stocks",
-                    exchange: "XNAS",
-                    active: true,
-                    limit: 100,
-                    sort: "ticker",
-                    order: "asc",
-                }
+                params
             );
         });
 
-        it("should merge custom params with defaults", async () => {
+        it("should pass custom params directly", async () => {
             const mockResponse = { results: [], status: "OK" };
+            const params = { limit: 50, search: "Apple" };
             vi.spyOn(api, "apiClient").mockResolvedValueOnce(mockResponse);
 
-            await getTickers({ limit: 50, search: "Apple" });
+            await getTickers(params);
 
             expect(api.apiClient).toHaveBeenCalledWith(
                 "/v3/reference/tickers",
-                {
-                    market: "stocks",
-                    exchange: "XNAS",
-                    active: true,
-                    limit: 50,
-                    sort: "ticker",
-                    order: "asc",
-                    search: "Apple",
-                }
+                params
             );
         });
 
-        it("should allow overriding default params", async () => {
+        it("should pass specific params directly", async () => {
             const mockResponse = { results: [], status: "OK" };
+            const params = { exchange: "XNGS", active: false };
             vi.spyOn(api, "apiClient").mockResolvedValueOnce(mockResponse);
 
-            await getTickers({ exchange: "XNGS", active: false });
+            await getTickers(params);
 
             expect(api.apiClient).toHaveBeenCalledWith(
                 "/v3/reference/tickers",
-                {
-                    market: "stocks",
-                    exchange: "XNGS",
-                    active: false,
-                    limit: 100,
-                    sort: "ticker",
-                    order: "asc",
-                }
+                params
             );
         });
     });
@@ -131,12 +120,6 @@ describe("tickerService", () => {
             expect(api.apiClient).toHaveBeenCalledWith(
                 "/v3/reference/tickers",
                 {
-                    market: "stocks",
-                    exchange: "XNAS",
-                    active: true,
-                    limit: 100,
-                    sort: "ticker",
-                    order: "asc",
                     search: "Apple",
                 }
             );
@@ -151,12 +134,7 @@ describe("tickerService", () => {
             expect(api.apiClient).toHaveBeenCalledWith(
                 "/v3/reference/tickers",
                 {
-                    market: "stocks",
-                    exchange: "XNAS",
-                    active: true,
                     limit: 50,
-                    sort: "ticker",
-                    order: "asc",
                     search: "Tech",
                 }
             );

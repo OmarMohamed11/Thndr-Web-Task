@@ -2,19 +2,12 @@ import { apiClient, fetchFromUrl } from "./api";
 import type { TickersResponse, TickersQueryParams } from "../types/ticker";
 
 export async function getTickers(
-    params: TickersQueryParams = {}
+    params: TickersQueryParams
 ): Promise<TickersResponse> {
-    const defaultParams = {
-        market: "stocks",
-        exchange: "XNAS",
-        active: true,
-        limit: 100,
-        sort: "ticker",
-        order: "asc",
-        ...params,
-    };
-
-    return apiClient<TickersResponse>("/v3/reference/tickers", defaultParams);
+    return apiClient<TickersResponse>(
+        "/v3/reference/tickers",
+        params as Record<string, string | number | boolean | undefined>
+    );
 }
 
 export async function getNextPage(nextUrl: string): Promise<TickersResponse> {

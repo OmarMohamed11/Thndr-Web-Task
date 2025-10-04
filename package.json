@@ -23,6 +23,7 @@
         "@radix-ui/react-toast": "^1.2.15",
         "@tanstack/query-sync-storage-persister": "^5.90.2",
         "@tanstack/react-query": "^5.62.7",
+        "@tanstack/react-query-devtools": "^5.90.2",
         "@tanstack/react-query-persist-client": "^5.90.2",
         "@types/react-window": "^2.0.0",
         "class-variance-authority": "^0.7.1",
