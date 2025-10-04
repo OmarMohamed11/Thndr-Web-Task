@@ -39,9 +39,9 @@ describe("LoadingSpinner", () => {
         expect(container.firstChild).toHaveClass("custom-class");
     });
 
-    it("has spinning animation", () => {
+    it("has pulse animation", () => {
         const { container } = render(<LoadingSpinner />);
-        const spinner = container.querySelector(".animate-spin");
+        const spinner = container.querySelector(".animate-pulse");
         expect(spinner).toBeInTheDocument();
     });
 });

@@ -1,14 +1,15 @@
 import { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "./skeleton";
 
 interface LoadingSpinnerProps extends HTMLAttributes<HTMLDivElement> {
     size?: "sm" | "md" | "lg";
 }
 
 const sizeClasses = {
-    sm: "h-4 w-4 border-2",
-    md: "h-8 w-8 border-2",
-    lg: "h-12 w-12 border-3",
+    sm: "h-4 w-4",
+    md: "h-8 w-8",
+    lg: "h-12 w-12",
 };
 
 export function LoadingSpinner({
@@ -23,11 +24,8 @@ export function LoadingSpinner({
             className={cn("flex items-center justify-center", className)}
             {...props}
         >
-            <div
-                className={cn(
-                    "animate-spin rounded-full border-light-blue border-t-transparent",
-                    sizeClasses[size]
-                )}
+            <Skeleton
+                className={cn("rounded-full animate-pulse", sizeClasses[size])}
             />
         </div>
     );
