@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "../assets/logo.svg";
 
 interface SplashProps {
-    onComplete: () => void;
+    readonly onComplete: () => void;
 }
 
 export default function Splash({ onComplete }: SplashProps) {
@@ -48,9 +48,6 @@ export default function Splash({ onComplete }: SplashProps) {
                 </div>
 
                 <div className="text-center space-y-4">
-                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-white to-light-blue bg-clip-text text-transparent">
-                        Nasdaq Stocks
-                    </h1>
                     <div className="w-24 h-px bg-gradient-to-r from-transparent via-light-blue/50 to-transparent mx-auto" />
                     <p className="text-slate-300 text-sm md:text-base">
                         Omar Mohamed -{" "}

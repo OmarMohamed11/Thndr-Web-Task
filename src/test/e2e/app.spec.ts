@@ -35,7 +35,7 @@ test.describe("App", () => {
                     timeout: 15000,
                 })
                 .then(() =>
-                    page.waitForSelector('h1:has-text("Nasdaq Stocks")', {
+                    page.waitForSelector('[data-testid="stock-card"]', {
                         timeout: 5000,
                     })
                 )
@@ -43,14 +43,7 @@ test.describe("App", () => {
                     // Verify main content is visible
                     return Promise.all([
                         expect(
-                            page.getByRole("heading", {
-                                name: /Nasdaq Stocks/i,
-                            })
-                        ).toBeVisible(),
-                        expect(
-                            page.getByText(
-                                "Explore stocks listed on the Nasdaq exchange"
-                            )
+                            page.locator('[data-testid="stock-card"]').first()
                         ).toBeVisible(),
                     ]);
                 }),
@@ -70,7 +63,8 @@ test.describe("App", () => {
 
         // Additional verification: ensure we're in a valid state (either success or error)
         const hasMainContent = await page
-            .getByRole("heading", { name: /Nasdaq Stocks/i })
+            .locator('[data-testid="stock-card"]')
+            .first()
             .isVisible()
             .catch(() => false);
         const hasErrorState = await page
@@ -166,13 +160,10 @@ test.describe("App", () => {
 
         // Should show main content
         await expect(
-            page.getByRole("heading", { name: /Nasdaq Stocks/i })
+            page.locator('[data-testid="stock-card"]').first()
         ).toBeVisible({
             timeout: 15000,
         });
-        await expect(
-            page.getByText("Explore stocks listed on the Nasdaq exchange")
-        ).toBeVisible();
 
         // Should show at least one stock card
         await expect(

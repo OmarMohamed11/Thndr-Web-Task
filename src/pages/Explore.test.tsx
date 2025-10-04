@@ -83,7 +83,7 @@ describe("Explore", () => {
             isError: false,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
         expect(screen.getByRole("status")).toBeInTheDocument();
         expect(screen.getByLabelText("Loading")).toBeInTheDocument();
@@ -104,7 +104,7 @@ describe("Explore", () => {
             isError: true,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
         expect(screen.getByText("Error")).toBeInTheDocument();
         expect(screen.getByText("Failed to fetch stocks")).toBeInTheDocument();
@@ -125,7 +125,7 @@ describe("Explore", () => {
             isError: false,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
         expect(screen.getByText("No stocks available")).toBeInTheDocument();
         expect(
@@ -147,12 +147,8 @@ describe("Explore", () => {
             isError: false,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
-        expect(screen.getByText("Nasdaq Stocks")).toBeInTheDocument();
-        expect(
-            screen.getByText("Explore stocks listed on the Nasdaq exchange")
-        ).toBeInTheDocument();
         expect(screen.getByText("AAPL")).toBeInTheDocument();
         expect(screen.getByText("Apple Inc.")).toBeInTheDocument();
         expect(screen.getByText("MSFT")).toBeInTheDocument();
@@ -173,7 +169,7 @@ describe("Explore", () => {
             isError: false,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
         expect(screen.getByText("Loading more stocks...")).toBeInTheDocument();
         expect(screen.getByLabelText("Loading")).toBeInTheDocument();
@@ -198,7 +194,7 @@ describe("Explore", () => {
             isError: false,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
         // Should render all tickers from both pages
         expect(screen.getByText("AAPL")).toBeInTheDocument();
@@ -219,7 +215,7 @@ describe("Explore", () => {
             isError: false,
         });
 
-        renderWithQueryClient(<Explore />);
+        renderWithQueryClient(<Explore searchTerm="" />);
 
         const gridContainer = screen.getByText("AAPL").closest(".grid");
         expect(gridContainer).toHaveClass(

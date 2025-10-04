@@ -132,15 +132,6 @@ export function Explore({ searchTerm }: ExploreProps) {
     if (isLoading) {
         return (
             <div className="container mx-auto px-4 py-8">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-center mb-2">
-                        Nasdaq Stocks
-                    </h1>
-                    <p className="text-center text-muted-foreground">
-                        Explore stocks listed on the Nasdaq exchange
-                    </p>
-                </div>
-
                 <div className="flex items-center justify-center min-h-[400px]">
                     <LoadingSpinner size="lg" />
                 </div>
@@ -151,15 +142,6 @@ export function Explore({ searchTerm }: ExploreProps) {
     if (isError && !data) {
         return (
             <div className="container mx-auto px-4 py-8">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-center mb-2">
-                        Nasdaq Stocks
-                    </h1>
-                    <p className="text-center text-muted-foreground">
-                        Explore stocks listed on the Nasdaq exchange
-                    </p>
-                </div>
-
                 <ErrorState
                     message={
                         error instanceof Error
@@ -178,19 +160,9 @@ export function Explore({ searchTerm }: ExploreProps) {
         ? data.pages.flatMap((page) => page.results || [])
         : [];
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (allTickers.length === 0 && !isLoading) {
+    if (allTickers.length === 0) {
         return (
             <div className="container mx-auto px-4 py-8">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-center mb-2">
-                        Nasdaq Stocks
-                    </h1>
-                    <p className="text-center text-muted-foreground">
-                        Explore stocks listed on the Nasdaq exchange
-                    </p>
-                </div>
-
                 <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
                     <div className="text-center">
                         <h3 className="text-lg font-semibold">
@@ -211,15 +183,6 @@ export function Explore({ searchTerm }: ExploreProps) {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-center mb-2">
-                    Nasdaq Stocks
-                </h1>
-                <p className="text-center text-muted-foreground">
-                    Explore stocks listed on the Nasdaq exchange
-                </p>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {allTickers.map((ticker, index) => {
                     const isLastElement = index === allTickers.length - 1;

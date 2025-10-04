@@ -17,7 +17,6 @@ describe("Splash", () => {
         render(<Splash onComplete={mockOnComplete} />);
 
         expect(screen.getByAltText("Nasdaq Logo")).toBeInTheDocument();
-        expect(screen.getByText("Nasdaq Stocks")).toBeInTheDocument();
         expect(screen.getByText("Omar Mohamed -")).toBeInTheDocument();
 
         const githubLink = screen.getByRole("link", { name: /@OmarMohamed11/ });
@@ -97,15 +96,6 @@ describe("Splash", () => {
             "md:w-56",
             "md:h-56",
             "drop-shadow-2xl"
-        );
-
-        const title = screen.getByText("Nasdaq Stocks");
-        expect(title).toHaveClass(
-            "text-3xl",
-            "md:text-4xl",
-            "font-bold",
-            "text-white",
-            "mb-2"
         );
     });
 
