@@ -3,7 +3,7 @@ import { Badge } from "./ui/badge";
 import type { Ticker } from "../types/ticker";
 
 interface StockCardProps {
-    ticker: Ticker;
+    readonly ticker: Ticker;
 }
 
 export function StockCard({ ticker }: StockCardProps) {
@@ -14,7 +14,10 @@ export function StockCard({ ticker }: StockCardProps) {
             : ticker.name;
 
     return (
-        <Card className="group h-full transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-light-blue/5 cursor-pointer bg-gradient-to-br from-slate-900/50 to-slate-800/50 border-slate-700/50 hover:border-light-blue/20 backdrop-blur-sm">
+        <Card
+            data-testid="stock-card"
+            className="group h-full transition-all duration-300 hover:scale-[1.01] hover:shadow-lg hover:shadow-light-blue/5 cursor-pointer bg-gradient-to-br from-slate-900/50 to-slate-800/50 border-slate-700/50 hover:border-light-blue/20 backdrop-blur-sm"
+        >
             <CardHeader className="pb-4 pt-6">
                 <div className="flex flex-col space-y-3">
                     <div className="flex items-start justify-between">
