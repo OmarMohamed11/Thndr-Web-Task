@@ -103,7 +103,12 @@ export async function apiClient<T>(
   endpoint: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
-  const url = new URL(API_BASE_URL, window.location.origin);
+  const url = new URL(
+    API_BASE_URL,
+    import.meta.env.MODE === "development"
+      ? "https://tiny-tanuki-d31adc.netlify.app/"
+      : window.location.origin
+  );
 
   // Add the endpoint as a query parameter for the proxy
   url.searchParams.append("endpoint", endpoint);

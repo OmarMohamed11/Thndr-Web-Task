@@ -1,4 +1,4 @@
-const POLYGON_API_KEY = process.env.POLYGON_API_KEY;
+const POLYGON_API_KEY = process.env.VITE_POLYGON_API_KEY;
 const POLYGON_BASE_URL = "https://api.polygon.io";
 
 export default async (req: Request) => {
