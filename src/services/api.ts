@@ -130,7 +130,12 @@ export async function fetchFromUrl<T>(url: string): Promise<T> {
   const endpoint = urlObj.pathname;
 
   // Create proxy URL
-  const proxyUrl = new URL(API_BASE_URL, window.location.origin);
+  const proxyUrl = new URL(
+    API_BASE_URL,
+    import.meta.env.MODE === "development"
+      ? "https://tiny-tanuki-d31adc.netlify.app/"
+      : window.location.origin
+  );
   proxyUrl.searchParams.append("endpoint", endpoint);
 
   // Copy all query parameters from the original URL
