@@ -93,7 +93,7 @@ test.describe("App", () => {
 
   test("should handle error state gracefully", async ({ page }) => {
     // Mock API to return error
-    await page.route("**/api.polygon.io/**", async (route) => {
+    await page.route("**/.netlify/functions/polygon-proxy**", async (route) => {
       await route.fulfill({
         status: 500,
         contentType: "application/json",
@@ -120,7 +120,7 @@ test.describe("App", () => {
 
   test("should show main content when API succeeds", async ({ page }) => {
     // Mock API to return successful response
-    await page.route("**/api.polygon.io/**", async (route) => {
+    await page.route("**/.netlify/functions/polygon-proxy**", async (route) => {
       const mockResponse = {
         status: "OK",
         results: [
