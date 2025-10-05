@@ -147,6 +147,6 @@ playwright/.cache/
 coverage/
 
 # Project documentation (local tracking only)
-README.md
+CONTEXT.md
 PLAN.md
 
