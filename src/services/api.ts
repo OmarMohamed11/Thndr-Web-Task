@@ -103,9 +103,10 @@ export async function apiClient<T>(
   endpoint: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
+  console.log("env", import.meta.env.MODE);
   const url = new URL(
     API_BASE_URL,
-    import.meta.env.MODE === "development"
+    import.meta.env.MODE === "development" || import.meta.env.MODE === "test"
       ? "https://tiny-tanuki-d31adc.netlify.app/"
       : window.location.origin
   );
@@ -132,7 +133,7 @@ export async function fetchFromUrl<T>(url: string): Promise<T> {
   // Create proxy URL
   const proxyUrl = new URL(
     API_BASE_URL,
-    import.meta.env.MODE === "development"
+    import.meta.env.MODE === "development" || import.meta.env.MODE === "test"
       ? "https://tiny-tanuki-d31adc.netlify.app/"
       : window.location.origin
   );
