@@ -103,7 +103,6 @@ export async function apiClient<T>(
   endpoint: string,
   params?: Record<string, string | number | boolean | undefined>
 ): Promise<T> {
-  console.log("env", import.meta.env.MODE);
   const url = new URL(
     API_BASE_URL,
     import.meta.env.MODE === "development" || import.meta.env.MODE === "test"
